@@ -6,6 +6,10 @@ import CustomText from "@/components/general/CustomText";
 import { COLORS } from "@/constants/COLORS";
 import { SPACING } from "@/constants/SPACING";
 import { MODAL } from "@/constants/LAYOUT";
+import { ChevronDown, Search } from 'lucide-react-native';
+import CustomInput from '@/components/general/CustomInput';
+import { ScrollView } from 'react-native';
+import SearchHistoryCard from './searchHistoryCard';
     
 interface ISearchModal {
     onClose: () => void;
@@ -80,10 +84,32 @@ if (!isVisible) return null;
                         { transform: [{ translateY: slideAnim }] }
                     ]}
                 >
-                    <CustomText>SearchModal</CustomText>
-                    <TouchableOpacity onPress={handleClose}>
-                        <CustomText>Close</CustomText>
-                    </TouchableOpacity>
+                    <CustomView
+                        width="100%"
+                        flexDirection={'row'}
+                        alignItems={'center'}
+                        justifyContent={'flex-start'}
+                        paddingVertical={SPACING.sm}
+                        paddingHorizontal={SPACING.xs}
+                        gap={SPACING.sm}
+                        style={styles.inputContainer}
+                    >
+                        <Search size={24} color={COLORS.border.secondary} />
+                        <CustomInput
+                            width="100%"
+                            placeholder="Search"
+                            placeholderFontSize={16}
+                        />
+                    </CustomView>
+                    <ScrollView
+                        style={{
+                            width : '100%',
+                        }}
+                        contentContainerStyle={styles.scrollView}
+                    >
+                        <SearchHistoryCard name="test" />   
+                    </ScrollView>
+                    <ChevronDown size={32} color={COLORS.text.primary} onPress={handleClose} />
                 </Animated.View>
             </Animated.View>
         </View>
@@ -112,7 +138,6 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         width: 350,
-        height: MODAL.HEIGHT,
         backgroundColor: COLORS.background.primary,
         borderRadius: SPACING.xxl,
         alignItems: 'center',
@@ -126,5 +151,16 @@ const styles = StyleSheet.create({
         shadowOpacity: 1,
         shadowRadius: 24,
         elevation: 5,
+        paddingVertical : SPACING.sm,
+        paddingHorizontal : 18,
+        gap : SPACING.sm,
+    },
+    inputContainer: {
+        borderBottomWidth : 1,
+        borderColor : COLORS.border.secondary,
+    },
+    scrollView: {
+        gap : SPACING.xs,
+        width : '100%',
     },
 });

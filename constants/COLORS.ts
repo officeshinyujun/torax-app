@@ -9,6 +9,7 @@ export const COLORS = {
     },
     brand : {
         primary : '#7C4CFF',
+        secondary : '#9E7BFF',
     },
     border : {
         primary : '#393939',
