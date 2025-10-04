@@ -26,7 +26,7 @@ export default function CustomButton({
                                         fontSize = 16, 
                                         onPress = () => {}, 
     style, fontWeight, justifyText
-                                     }: ButtonProps) {
+                                    }: ButtonProps) {
     
     const buttonStyle: StyleProp<ViewStyle> = {
         backgroundColor,

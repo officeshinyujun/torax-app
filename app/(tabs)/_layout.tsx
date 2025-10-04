@@ -42,12 +42,6 @@ export default function TabLayout() {
           title: 'Profile',
         }}
       />
-      <Tabs.Screen
-        name="register"
-        options={{
-          title: 'Register',
-        }}
-      />
     </Tabs>
   );
 }
