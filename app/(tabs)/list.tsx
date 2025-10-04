@@ -1,9 +1,9 @@
-import CustomView from '@/components/general/CustomView';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { COLORS } from '@/constants/COLORS';
 import NavBar from '@/components/general/NavBar';
 
-export default function HomeScreen() {
+export default function ListScreen() {
   return (
     <SafeAreaView 
     style={styles.container}>

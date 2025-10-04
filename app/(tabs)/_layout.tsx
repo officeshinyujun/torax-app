@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { COLORS } from '@/constants/COLORS';
 
 export default function TabLayout() {
 
@@ -7,6 +8,9 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
+        tabBarStyle:{
+          display : 'none'
+        }
       }}>
       <Tabs.Screen
         name="index"
@@ -15,9 +19,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="list"
         options={{
-          title: 'Explore',
+          title: 'List',
+        }}
+      />
+      <Tabs.Screen
+        name="like"
+        options={{
+          title: 'Like',
         }}
       />
     </Tabs>

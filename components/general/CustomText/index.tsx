@@ -3,16 +3,16 @@ import { ReactNode } from "react";
 
 interface IProps {
     children: ReactNode;
-    textColor?: string;
+    fontColor?: string;
     fontSize?: number;
-    fontWeight?: TextStyle["fontWeight"];
+    fontWeight?: number;
     style?: any;
 }
 
 export default function CustomText(props: IProps) {
-    const { children, textColor, fontSize, fontWeight, style } = props;
+    const { children, fontColor, fontSize, fontWeight, style } = props;
     return (
-        <Text style={{ color: textColor, fontSize, fontWeight, ...style }}>
+        <Text style={{ color: fontColor, fontSize, fontWeight, ...style }}>
             {children}
         </Text>
     );

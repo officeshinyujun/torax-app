@@ -1,4 +1,4 @@
-import { TouchableOpacity } from "react-native";
+import { View } from "react-native";
 
 interface IProps {
     children?: any;
@@ -12,15 +12,12 @@ interface IProps {
     paddingVertical?: any;
     paddingHorizontal?: any;
     borderRadius?: number;
-    onPress?: () => void;
 }
 
 export default function CustomView(props: IProps) {
-    const {children, style, width, height, justifyContent, alignItems, flexDirection, gap, paddingVertical, paddingHorizontal, borderRadius, onPress} = props;
+    const {children, style, width, height, justifyContent, alignItems, flexDirection, gap, paddingVertical, paddingHorizontal, borderRadius, } = props;
     return (
-        <TouchableOpacity
-            activeOpacity={onPress ? 0.7 : 1}
-            onPress={onPress}
+        <View
             style={{
                 width: width,
                 height: height,
@@ -36,6 +33,6 @@ export default function CustomView(props: IProps) {
             }}
         >
             {children}
-        </TouchableOpacity>
+        </View>
     )
 }

@@ -12,6 +12,6 @@ export const COLORS = {
     },
     border : {
         primary : '#393939',
-        secondary : '#6F6F6F',
+        secondary : '#4D4D4D',
     }
 }
