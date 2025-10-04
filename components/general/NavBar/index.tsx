@@ -64,6 +64,7 @@ export default function NavBar() {
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
+        zIndex : 9999,
         bottom: 0,
         backgroundColor: COLORS.background.primary,
         borderWidth: 1,
