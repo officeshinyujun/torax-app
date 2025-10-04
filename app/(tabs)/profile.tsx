@@ -1,14 +1,12 @@
-import CustomView from '@/components/general/CustomView';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { COLORS } from '@/constants/COLORS';
 import NavBar from '@/components/general/NavBar';
-import Header from '@/components/general/Header';
 
-export default function HomeScreen() {
+export default function ProfileScreen() {
   return (
     <SafeAreaView 
     style={styles.container}>
-      <Header/>
       <NavBar />
     </SafeAreaView>
   );
@@ -19,7 +17,5 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.background.primary,
-        alignItems : 'center',
-        justifyContent : 'flex-start',
     },
 });
