@@ -5,7 +5,6 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { COLORS } from "@/constants/COLORS";
 import { usePathname } from 'expo-router';
 import { Search } from "lucide-react-native";
-import Modal from 'react-native-modal'
 import { useState } from 'react';
 import SearchModal from '@/components/Search/SearchModal';
 
@@ -57,9 +56,7 @@ export default function NavBar() {
             routeName={routeMap.list}
         />
     </CustomView>
-    <Modal isVisible={isModalVisible} onBackdropPress={() => setModalVisible(false)}>
-        <SearchModal />
-    </Modal>
+    <SearchModal onClose={() => setModalVisible(false)} isVisible={isModalVisible} />
     </>
   );
 }
@@ -76,7 +73,7 @@ const styles = StyleSheet.create({
     searchContainer:{
         width:52,
         height:52,
-        borderRadius : 999,
+        borderRadius : 9999,
         backgroundColor: COLORS.brand.primary,
         alignItems:'center',
         justifyContent:'center',
