@@ -1,8 +1,7 @@
-import { useEffect, useRef } from 'react';
-import { Animated, TouchableOpacity, TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, TouchableOpacity, TouchableWithoutFeedback, View, StyleSheet, Platform, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { BlurView } from 'expo-blur';
 import CustomView from "@/components/general/CustomView";
-import CustomText from "@/components/general/CustomText";
 import { COLORS } from "@/constants/COLORS";
 import { SPACING } from "@/constants/SPACING";
 import { MODAL } from "@/constants/LAYOUT";
@@ -17,6 +16,7 @@ interface ISearchModal {
 }
 
 export default function SearchModal({ onClose, isVisible }: ISearchModal) {
+    const [keyboardHeight, setKeyboardHeight] = useState(0);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(MODAL.HIDDEN_POSITION)).current;
 
@@ -38,6 +38,20 @@ export default function SearchModal({ onClose, isVisible }: ISearchModal) {
             onClose();
         });
     };
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
+            setKeyboardHeight(e.endCoordinates.height);
+        });
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardHeight(0);
+        });
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
     useEffect(() => {
         if (isVisible) {
             // Reset animation values
@@ -61,8 +75,16 @@ export default function SearchModal({ onClose, isVisible }: ISearchModal) {
 }, [isVisible]);
 
 if (!isVisible) return null;
+    const modalBottom = keyboardHeight > 0 ? 
+        keyboardHeight + 20 : // 키보드가 보일 때는 키보드 높이 + 여백
+        106; // 원래 위치 (NavBar height + 20px)
+
     return (
-        <View style={styles.overlay}>
+        <KeyboardAvoidingView 
+            style={styles.overlay}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+        >
             <Animated.View 
                 style={[
                     styles.modalContainer,
@@ -70,13 +92,19 @@ if (!isVisible) return null;
                 ]}
             >
                 <TouchableWithoutFeedback onPress={handleClose}>
-                    <BlurView
-                        style={styles.blurView}
-                        intensity={40}
-                        tint="dark"
-                    >
-                        <View style={styles.blurBackground} />
-                    </BlurView>
+                    {Platform.OS === 'ios' ? (
+                        <BlurView
+                            style={styles.blurView}
+                            intensity={40}
+                            tint="dark"
+                        >
+                            <View style={styles.blurBackground} />
+                        </BlurView>
+                    ) : (
+                        <View style={[styles.blurView, styles.androidBlur]}>
+                            <View style={styles.blurBackground} />
+                        </View>
+                    )}
                 </TouchableWithoutFeedback>
                 <Animated.View 
                     style={[
@@ -112,7 +140,7 @@ if (!isVisible) return null;
                     <ChevronDown size={32} color={COLORS.text.primary} onPress={handleClose} />
                 </Animated.View>
             </Animated.View>
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -131,19 +159,27 @@ const styles = StyleSheet.create({
     },
     blurView: {
         ...StyleSheet.absoluteFillObject,
+        zIndex: 1,
+    },
+    androidBlur: {
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
     },
     blurBackground: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'rgba(0, 0, 0, 0.3)',
     },
     modalContent: {
+        position: 'absolute',
+        bottom: (props: { keyboardHeight: number }) => 
+            props.keyboardHeight > 0 ? props.keyboardHeight + 20 : 106,
         width: 350,
-        backgroundColor: COLORS.background.primary,
         borderRadius: SPACING.xxl,
         alignItems: 'center',
         justifyContent: 'center',
+        //@ts-ignore
         position: 'absolute',
-        bottom: 106, // NavBar height (86) + 20px
+        //@ts-ignore
+        bottom: 106, // 기본 위치 (NavBar height + 20px)
         left: '50%',
         marginLeft: -175, // Half of width (350/2)
         shadowColor: 'rgba(81, 81, 81, 0.25)',
@@ -154,6 +190,8 @@ const styles = StyleSheet.create({
         paddingVertical : SPACING.sm,
         paddingHorizontal : 18,
         gap : SPACING.sm,
+        zIndex : 9999,
+        backgroundColor : COLORS.background.primary,
     },
     inputContainer: {
         borderBottomWidth : 1,
