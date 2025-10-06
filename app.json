@@ -10,7 +10,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yujunshin2146.toraxapp"
+      "bundleIdentifier": "com.yujunshin2146.toraxapp",
+      "infoPlist": {
+        "UIBackgroundModes": ["audio", "fetch"]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -21,13 +24,22 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.yujunshin2146.toraxapp"
+      "package": "com.yujunshin2146.toraxapp",
+      "permissions": [
+        "android.permission.FOREGROUND_SERVICE"
+      ]
     },
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone"
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",

@@ -1,5 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { COLORS } from '@/constants/COLORS';
 import NavBar from '@/components/general/NavBar';
 import Header from '@/components/general/Header';

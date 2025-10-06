@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Animated, TouchableOpacity, TouchableWithoutFeedback, View, StyleSheet, Platform, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { BlurView } from 'expo-blur';
+import { router } from 'expo-router';
 import CustomView from "@/components/general/CustomView";
 import { COLORS } from "@/constants/COLORS";
 import { SPACING } from "@/constants/SPACING";
@@ -9,6 +10,8 @@ import { ChevronDown, Search } from 'lucide-react-native';
 import CustomInput from '@/components/general/CustomInput';
 import { ScrollView } from 'react-native';
 import SearchHistoryCard from './searchHistoryCard';
+import CustomText from '@/components/general/CustomText';
+import { useSearchStore } from '@/stores/useSearchStore';
     
 interface ISearchModal {
     onClose: () => void;
@@ -16,9 +19,11 @@ interface ISearchModal {
 }
 
 export default function SearchModal({ onClose, isVisible }: ISearchModal) {
+    const [searchQuery, setSearchQuery] = useState('');
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(MODAL.HIDDEN_POSITION)).current;
+    const { addToSearchHistory } = useSearchStore();
 
     const handleClose = () => {
         // Start fade out and slide down animations
@@ -37,6 +42,24 @@ export default function SearchModal({ onClose, isVisible }: ISearchModal) {
             // Call onClose after animation completes
             onClose();
         });
+    };
+
+    const handleSearch = () => {
+        if (!searchQuery.trim()) return;
+        
+        // 검색어를 저장소에 추가
+        addToSearchHistory(searchQuery);
+        
+        // 키보드 닫기
+        Keyboard.dismiss();
+        
+        // 검색 페이지로 이동
+        router.push('/(tabs)/search');
+        
+        // 모달 닫기
+        setTimeout(() => {
+            handleClose();
+        }, 300);
     };
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
@@ -116,19 +139,42 @@ if (!isVisible) return null;
                         width="100%"
                         flexDirection={'row'}
                         alignItems={'center'}
-                        justifyContent={'flex-start'}
                         paddingVertical={SPACING.sm}
                         paddingHorizontal={SPACING.xs}
                         gap={SPACING.sm}
                         style={styles.inputContainer}
                     >
                         <Search size={24} color={COLORS.border.secondary} />
-                        <CustomInput
-                            width="100%"
-                            placeholder="Search"
-                            placeholderFontSize={16}
-                        />
+                            <CustomInput
+                                width="100%"
+                                placeholder="Search"
+                                placeholderFontSize={16}
+                                onValueChange={setSearchQuery}
+                                style={{
+                                    padding: 0,
+                                    margin: 0,
+                                    includeFontPadding: false,
+                                    textAlignVertical: 'center'
+                                }}
+                            />
                     </CustomView>
+                    <TouchableOpacity 
+                        style={{
+                            width:'100%', 
+                            alignItems:'center', 
+                            justifyContent:'center', 
+                            backgroundColor: COLORS.brand.primary, 
+                            paddingHorizontal: SPACING.md, 
+                            paddingVertical: SPACING.sm, 
+                            borderRadius: SPACING.xs,
+                            marginTop: SPACING.sm,
+                            marginBottom: SPACING.sm
+                        }}
+                        onPress={handleSearch}
+                        activeOpacity={0.8}
+                    >
+                        <CustomText fontColor={COLORS.text.primary} fontSize={16} fontWeight={500}>Search</CustomText>
+                    </TouchableOpacity>
                     <ScrollView
                         style={{
                             width : '100%',

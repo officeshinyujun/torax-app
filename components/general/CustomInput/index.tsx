@@ -10,10 +10,20 @@ interface IProps {
     onValueReturn?: any;
     secureTextEntry?: boolean;
     style?: any;
+    value?: string;
 }
 
 export default function CustomInput(props: IProps) {
-    const { width, height, placeholder, onValueChange, secureTextEntry, placeholderFontSize, style } = props;
+    const { 
+        width, 
+        height, 
+        placeholder, 
+        onValueChange, 
+        secureTextEntry, 
+        placeholderFontSize, 
+        style,
+        value
+    } = props;
 
     const handleChange = (text: string) => {
         if (onValueChange) {
@@ -24,13 +34,20 @@ export default function CustomInput(props: IProps) {
     return (
         <TextInput
             style={[
-                { width: width, height: height, fontSize: placeholderFontSize},
+                { 
+                    width: width, 
+                    height: height, 
+                    fontSize: placeholderFontSize,
+                    color: COLORS.text.primary
+                },
                 style
-                ]}
+            ]}
             placeholder={placeholder}
             placeholderTextColor={COLORS.text.secondary}
-            onChangeText={handleChange} 
-            secureTextEntry={secureTextEntry} 
+            onChangeText={handleChange}
+            value={value}
+            secureTextEntry={secureTextEntry}
+            selectionColor={COLORS.brand.primary}
         />
     );
 }
